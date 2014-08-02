@@ -1,0 +1,55 @@
+<div class="dialog large" id="add-form-dialog">
+    <div class="dialog-background"></div>
+    <form id="add-form" method="post" action="?action=saveForm" enctype="multipart/form-data" >
+        <div class="dialog-window">
+            <div class="dialog-content">
+                <div class="dialog-content-indent">
+                    <div class="fields form s-dialog-form">
+                        <input type="hidden" id="form-id" value="{if isset($form.id)}{$form.id}{/if}" name="form[id]">
+                        <div class="field-group">
+                            <div class="field">
+                                <div class="name">[`Title`]</div>
+                                <div class="value">
+                                    <input type="text" id="messagebox-name" value="{if isset($form.name)}{$form.name|escape}{/if}" class="large long" name="form[name]">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field-group" style="min-width: 600px;">
+
+                            <div class="field description">
+                                <div class="name">
+                                    <label for="description">
+                                        [`Description`]
+                                    </label>
+                                </div>
+                                <div class="value">
+                                    <i class="icon16 loading"></i>
+                                    <div class="s-editor-core-wrapper wa-editor-core-wrapper" style="display:none;">
+                                        <ul class="wa-editor-wysiwyg-html-toggle s-wysiwyg-html-toggle">
+                                            <li class="selected"><a class="wysiwyg" href="#">[s`WYSIWYG`]</a></li>
+                                            <li><a class="html" href="#">HTML</a></li>
+                                        </ul>
+                                        <div>
+                                            <textarea style="display:none" id="messagebox-description-content" name="form[description]">{if isset($form.description)}{$form.description|escape}{/if}</textarea>
+                                            <div class="ace">
+                                                <div id="wa-ace-editor-container"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-buttons">
+                <div class="dialog-buttons-gradient">
+                    <input type="submit" value="[`Save`]" class="button green">
+                    [`or`] <a class="cancel" href="#">[`cancel`]</a>
+                    <span class="dialog-response"></span>
+                </div>
+            </div>
+            {$wa->csrf()}
+        </div>
+    </form>
+</div>
