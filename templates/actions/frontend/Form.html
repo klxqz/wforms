@@ -1,0 +1,24 @@
+<h1>{$form.title|escape}</h1>
+{if $form.description}
+    <div>
+        {$form.description}
+    </div>
+{/if}
+
+<form>
+    <table class="form-fields">
+        {foreach $fields as $field}
+            <tr class="form-field">
+                <td class="field-name">
+                    {$field.name|escape}                
+                </td>
+                <td class="field-value">
+                    {include file="./fields/include.`$field.type`.html" field=$field}
+                    <p>{$field.hint|escape}</p>
+                    
+                </td>
+            </tr>
+        {/foreach}
+    </table>
+    <input type="submit" value="Отправить">
+</form>

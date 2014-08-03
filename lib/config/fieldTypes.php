@@ -1,10 +1,12 @@
 <?php
 
 return array(
-    'text' => 'Текст(input)',
-    'textarea' => 'Текстовое(textarea)',
-    'checkbox' => 'Чекбоксы(checkbox)',
-    'radio' => 'Переключатель(radio)',
-    'select' => 'Список(select)',
+    'text' => 'Текст (input)',
+    'textarea' => 'Текстовое поле (textarea)',
+    'checkbox' => 'Чекбокс (checkbox)',
+    'checkboxes' => 'Множественный выбор (Чекбоксы)',
+    'radio' => 'Переключатель (radio)',
+    'select' => 'Раскрывающийся список (select)',
+    'select_multiple' => 'Список множественного выбора (select multiple)',
     'file' => 'Файл(file)',
 );

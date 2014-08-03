@@ -1,0 +1,5 @@
+<select name="field_{$field.id}">
+    {foreach $field.values as $value}
+        <option value="{$value.name|escape}" {if $value.value}selected="selected"{/if}>{$value.name|escape}</option>
+    {/foreach}
+</select>

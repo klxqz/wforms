@@ -3,25 +3,26 @@
     $.wforms = {
         // init js controller
         init: function() {
-            var self = this;
             // if history exists
+
             if (typeof ($.History) != "undefined") {
                 $.History.bind(function(hash) {
                     $.wforms.dispatch(hash);
                 });
             }
 
+
             $('#form-add-link').click(function() {
                 $.wforms.addFormDialog();
                 return false;
             });
 
-            $('#content').on('click', '.js-action', function() {
-                self.dispatch($(this).attr('href').replace(/^[^#]*#\/*/, ''));
-                return false;
-            });
-
-            this.dispatch();
+            var hash = window.location.hash;
+            if (hash === '#/' || !hash) {
+                this.dispatch();
+            } else {
+                $.wa.setHash(hash);
+            }
         },
         // dispatch call method by hash
         dispatch: function(hash) {
@@ -75,100 +76,7 @@
             $("#content").load('?action=records');
         },
         formAction: function(params) {
-            $("#content").load('?action=form&id=' + params, function() {
-                if ($('#messagebox-description-content').length) {
-                    $.wforms.initDialogWysiwyg($(this));
-                }
-                $.wforms.formInit();
-            });
-        },
-        saveFieldAction: function() {
-            var form = $('#edit-form');
-            $.ajax({
-                type: 'POST',
-                url: '?action=saveField',
-                dataType: 'json',
-                data: form.serialize(),
-                success: function(data, textStatus, jqXHR) {
-                    if (data.status == 'ok') {
-
-                        $('#field-tmpl').tmpl(data.data.field).appendTo('#form-fiels-table');
-                        $('.add-edit-field').remove();
-                        //form.find('.dialog-response').html('<span class="success-msg">' + data.data.message + '</span>');
-                    } else {
-                        alert(data.errors.join(' '));
-                    }
-                }
-            });
-
-        },
-        formInit: function() {
-            $('#add-field-but').click(function() {
-                var data = {
-                    field_types: $field_types,
-                    required: 1
-                };
-                $('#add-edit-field-tmpl').tmpl(data).appendTo('#form-fiels-table');
-                return false;
-            });
-            $('#edit-form').submit(function() {
-                var form = $(this);
-                $.ajax({
-                    type: 'POST',
-                    url: form.attr('action'),
-                    dataType: 'json',
-                    data: form.serialize(),
-                    success: function(data, textStatus, jqXHR) {
-                        if (data.status == 'ok') {
-                            form.find('.response').html('<span class="success-msg">' + data.data.message + '</span>');
-                        } else {
-                            form.find('.response').html('<span class="error-msg">' + data.errors.join() + '</span>');
-                        }
-                        setTimeout(function() {
-                            form.find('.response span').hide();
-                        }, 3000);
-                    }
-                });
-                return false;
-            });
-            $('#edit-form').on('click', '.delete-but', function() {
-                var field_row = $(this).closest('.field-row');
-                var field_id = field_row.data('id');
-                $.ajax({
-                    type: 'POST',
-                    url: '?action=deleteField',
-                    dataType: 'json',
-                    data: {id: field_id},
-                    success: function(data, textStatus, jqXHR) {
-                        if (data.status == 'ok') {
-                            field_row.remove();
-                        } else {
-                            alert(data.errors.join(' '));
-                        }
-                    }
-                });
-                return false;
-            });
-            $('#edit-form').on('click', '.edit-but', function() {
-                var field_row = $(this).closest('.field-row');
-                var field_id = field_row.data('id');
-                $.ajax({
-                    type: 'POST',
-                    url: '?action=editField',
-                    dataType: 'json',
-                    data: {id: field_id},
-                    success: function(data, textStatus, jqXHR) {
-                        if (data.status == 'ok') {
-                            field_row.replaceWith($('#add-edit-field-tmpl').tmpl(data.data.field));
-                            //$('#field-tmpl').tmpl(data.data.field).('#form-fiels-table .field-add-row');
-                            //field_row.remove();
-                        } else {
-                            alert(data.errors.join(' '));
-                        }
-                    }
-                });
-                return false;
-            });
+            $("#content").load('?action=form&id=' + params);
         },
         addFormDialog: function(messagebox_id) {
             messagebox_id = messagebox_id || null;

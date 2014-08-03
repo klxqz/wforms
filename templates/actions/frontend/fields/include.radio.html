@@ -1,0 +1,3 @@
+{foreach $field.values as $value}
+<input type="radio" name="field_{$field.id}" {if $value.value}checked="checked"{/if} /> {$value.name|escape}
+{/foreach}

@@ -1,3 +1,4 @@
+<script src="{$wa_url}wa-content/js/jquery-ui/jquery.ui.sortable.min.js"></script>
 <script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.tmpl.min.js"></script>
 
 <h1>Редактирование формы</h1>
@@ -52,12 +53,13 @@
             <div class="field">
                 <div class="name">[`Form fields`]</div>
                 <div class="value">
-                    <table id="form-fiels-table" class="zebra full-width">
+                    <table id="form-fiels-table" class="zebra full-width ui-sortable">
                         <thead>
                             <tr class="header">
                                 <th class="min-width">&nbsp;</th>
                                 <th>Название</th>
                                 <th>Подсказка</th>
+                                <th>Значение по умолчанию</th>
                                 <th>Тип и значения</th>
                                 <th>Обязательное</th>
                                 <th colspan="2">&nbsp;</th>
@@ -67,15 +69,24 @@
                         <tbody style="vertical-align: top !important;">
                             {foreach $fields as $field}
                                 <tr class="field-row" data-id="{$field.id}">
-                                    <td></td>
-                                    <td>
-                                        {$field.name|escape}
-                                    </td>
-                                    <td>
-                                        {$field.hint|escape}
-                                    </td>
+                                    <td><i class="icon16 sort"></i></td>
+                                    <td>{$field.name|escape}</td>
+                                    <td>{$field.hint|escape}</td>
+                                    <td>{$field.default_value|escape}</td>
                                     <td>
                                         {$field_types[$field.type]}
+                                        <ul>
+                                            {foreach $field.values as $value}
+                                                <li>
+                                                    {if $value.value}
+                                                        <i class="icon10 status-green"></i>
+                                                    {else}
+                                                        <i class="icon10 status-red"></i>
+                                                    {/if}
+                                                    {$value.name}
+                                                </li>
+                                            {/foreach}
+                                        </ul>
                                     </td>
                                     <td>
                                         {if $field.required}
@@ -98,7 +109,7 @@
                         </tbody>
                     </table>
 
-                    <a href="#" id="add-field-but"><i class="icon16 add"></i>Добавить</a>
+                    <a href="#/addField/" class="js-action"><i class="icon16 add"></i>Добавить</a>
                 </div>
             </div>
         </div>
@@ -114,58 +125,125 @@
 
 {literal}
     <script id="field-tmpl" type="text/x-jquery-tmpl">
-        <tr class="field-row">
-            <td></td>
-            <td>
-                ${name}
-            </td>
-            <td>
-                ${hint}
-            </td>
-            <td>
-                ${type}
-            </td>
-            <td>
-                ${required}
-            </td>
-            <td>
-                <div class="control-buttons">
-                    <a href="#" class="edit-but"><i class="icon16 edit"></i>Редактировать</a>
-                    <a href="#" class="delete-but"><i class="icon16 cross"></i>Удалить</a>
-                </div>
-            </td>
+        <tr class="field-row" data-id="${id}">
+        <td><i class="icon16 sort"></i></td>
+        <td>${name}</td>
+        <td>${hint}</td>
+        <td>${default_value}</td>
+        <td>
+        ${type}
+        <ul>
+        {{each values}}
+        <li>
+        {{if $value.value == '1'}}
+        <i class="icon10 status-green"></i>
+        {{else}}
+        <i class="icon10 status-red"></i>
+        {{/if}}
+        ${$value.name}
+        </li>
+        {{/each}}
+        </ul>
+        </td>
+        <td>${required}</td>
+        <td>
+        <div class="control-buttons">
+        <a href="#" class="edit-but"><i class="icon16 edit"></i>Редактировать</a>
+        <a href="#" class="delete-but"><i class="icon16 cross"></i>Удалить</a>
+        </div>
+        </td>
         </tr>
     </script>
     <script id="add-edit-field-tmpl" type="text/x-jquery-tmpl">
         <tr class="field-row add-edit-field">
-            <td></td>
-            <td>
-                <input type="hidden" value="${id}" name="field[id]" />
-                <input type="text" value="${name}" name="field[name]" />
-            </td>
-            <td>
-                <input type="text" value="${hint}" name="field[hint]" />
-            </td>
-            <td>
-                <select name="field[type]">
-                    {{each field_types}}
-                    <option {{if required}}selected="selected"{{/if}} value="${$index}">${$value}</option>
-                    {{/each}}
-                </select>
-            </td>
-            <td>
-                <input type="hidden" value="0" name="field[required]" />
-                <input type="checkbox" {{if required}}checked="checked"{{/if}} value="1" name="field[required]" />
-            </td>
-            <td>
-                <div class="control-buttons">
-                    <a class="save-field-but js-action" href="#/saveField/"><i class="icon16 yes"></i>Сохранить</a>
-                    <a class="cancel-field-but" href="#"><i class="icon16 no"></i>Отменить</a>
-                </div>
-            </td>
+        <td><i class="icon16 sort"></i></td>
+        <td>
+        <input type="hidden" value="${id}" name="field[id]" />
+        <input type="hidden" value="${form_id}" name="field[form_id]" />
+        <input type="text" value="${name}" name="field[name]" />
+        </td>
+        <td>
+        <input type="text" value="${hint}" name="field[hint]" />
+        </td>
+        <td>
+        <input type="text" value="${default_value}" name="field[default_value]" />
+        </td>
+        <td>
+        <select class="field-type" name="field[type]">
+        {{each field_types}}
+        <option {{if type == $index}}selected="selected"{{/if}} value="${$index}">${$value}</option>
+        {{/each}}
+        </select>
+        <div class="field-values">
+        <ul>
+        {{if type == 'checkboxes' || type == 'select_multiple'}}
+
+        {{each values}}
+        <li>
+        <input type="hidden" name="field[values][id][]" value="${$value.id}" />
+        <input class="switch-item" type="hidden" name="field[values][value][]" value="0" {{if $value.value == '1'}}disabled="disabled"{{/if}} />
+        <input class="switch-item" type="checkbox" name="field[values][value][]" value="1" {{if $value.value == '1'}}checked="checked"{{/if}} />
+        <input type="text" name="field[values][name][]" value="${$value.name}" />
+        <a class="delete-field-value-but" href="#"><i class="icon10 delete"></i></a>
+        </li>
+        {{/each}}
+        {{else}}
+        {{if type == 'radio' || type == 'select'}}
+
+        {{each values}}
+        <li>
+        <input type="hidden" name="field[values][id][]" value="${$value.id}" />
+        <input class="switch-item" type="hidden" name="field[values][value][]" value="0" {{if $value.value == '1'}}disabled="disabled"{{/if}} />
+        <input class="switch-item" type="radio" name="field[values][value][]" value="1" {{if $value.value == '1'}}checked="checked"{{/if}} />
+        <input type="text" name="field[values][name][]" value="${$value.name}" />
+        <a class="delete-field-value-but" href="#"><i class="icon10 delete"></i></a>
+        </li>
+        {{/each}}
+        {{/if}}
+
+        {{/if}}
+
+        </ul>
+        <a class="add-field-value-but" href="#"><i class="icon10 add"></i>Добавить значение</a>
+        </div>
+
+        </td>
+        <td>
+        <input type="hidden" value="0" name="field[required]" />
+        <input type="checkbox" {{if required == '1'}}checked="checked"{{/if}} value="1" name="field[required]" />
+        </td>
+        <td>
+        <div class="control-buttons">
+        <a class="save-field-but" href="#"><i class="icon16 yes"></i>Сохранить</a>
+        </div>
+        </td>
         </tr>
     </script>
+    <script id="type-checkboxes-field-tmpl" type="text/x-jquery-tmpl">
+        <li>
+        <input type="hidden" name="field[values][id][]" value="" />
+        <input class="switch-item" type="hidden" name="field[values][value][]" value="0" />
+        <input class="switch-item" type="checkbox" name="field[values][value][]" value="1" />
+        <input type="text" name="field[values][name][]">
+        <a class="delete-field-value-but" href="#"><i class="icon10 delete"></i></a>
+        </li>
+    </script>
+    <script id="type-radio-field-tmpl" type="text/x-jquery-tmpl">
+        <li>
+        <input type="hidden" name="field[values][id][]" value="" />
+        <input class="switch-item" type="hidden" name="field[values][value][]" value="0" />
+        <input class="switch-item" type="radio" name="field[values][value][]" value="1" />
+        <input type="text" name="field[values][name][]">
+        <a class="delete-field-value-but" href="#"><i class="icon10 delete"></i></a>
+        </li>
+    </script>
 {/literal}
+
+<script type="text/javascript" src="{$wa_app_static_url}js/form.js"></script>	
 <script type="text/javascript">
-    var $field_types = $.parseJSON('{json_encode($field_types)}');
+    var field_types = $.parseJSON('{json_encode($field_types)}');
+    $.wforms_form.init({
+    form_id: {$form.id},
+    field_types: field_types
+    });
 </script>
