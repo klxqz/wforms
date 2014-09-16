@@ -1,6 +1,6 @@
 <?php
 
-class wformsFieldValuesModel extends waModel {
+class wformsFieldValuesModel extends wformsSortableModel {
 
     protected $table = 'wforms_field_values';
 

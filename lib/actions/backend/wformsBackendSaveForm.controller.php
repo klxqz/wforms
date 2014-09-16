@@ -14,8 +14,10 @@ class wformsBackendSaveFormController extends waJsonController {
                 $model->updateById($data['id'], $data);
             } else {
                 $id = $model->insert($data);
-                $this->response['form_id'] = $id;
+                $data['id'] = $id;
             }
+            $data['description'] = substr(strip_tags($data['description']), 0, 400);
+            $this->response['form'] = $data;
             $this->response['message'] = 'Сохранено';
         } catch (Exception $ex) {
             $this->setError($ex->getMessage());

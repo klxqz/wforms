@@ -1,10 +1,9 @@
 <script src="{$wa_url}wa-content/js/jquery-ui/jquery.ui.sortable.min.js"></script>
-<script type="text/javascript" src="{$wa_url}wa-content/js/jquery-plugins/jquery.tmpl.min.js"></script>
 
-<h1>Редактирование формы</h1>
-
+<h1>[`Edit form`] <a title="[`Delete`]" class="delete-form" data-id="{$form.id}" href="#"><i class="icon16 delete"></i></a></h1>
+<p></p>
 <form id="edit-form" method="post" action="?action=saveForm" enctype="multipart/form-data" >
-    <div class="fields form s-dialog-form">
+    <div class="fields form">
         <input type="hidden" id="form-id" value="{$form.id}" name="form[id]">
 
         <div class="field-group">
@@ -12,6 +11,18 @@
                 <div class="name">[`Title`]</div>
                 <div class="value">
                     <input type="text" value="{$form.title|escape}" class="large long" name="form[title]">
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">[`To`]</div>
+                <div class="value">
+                    <input type="text" value="{$form.to|escape}" class="large long" name="form[to]">
+                </div>
+            </div>
+            <div class="field">
+                <div class="name">[`From`]</div>
+                <div class="value">
+                    <input type="text" value="{$form.from|escape}" class="large long" name="form[from]">
                 </div>
             </div>
         </div>
@@ -39,7 +50,7 @@
                             <li><a class="html" href="#">HTML</a></li>
                         </ul>
                         <div>
-                            <textarea style="display:none" id="messagebox-description-content" name="form[description]">{$form.description|escape}</textarea>
+                            <textarea style="display:none" id="form-description-content" name="form[description]">{$form.description|escape}</textarea>
                             <div class="ace">
                                 <div id="wa-ace-editor-container"></div>
                             </div>
@@ -57,11 +68,11 @@
                         <thead>
                             <tr class="header">
                                 <th class="min-width">&nbsp;</th>
-                                <th>Название</th>
-                                <th>Подсказка</th>
-                                <th>Значение по умолчанию</th>
-                                <th>Тип и значения</th>
-                                <th>Обязательное</th>
+                                <th>[`Name`]</th>
+                                <th>[`Hint`]</th>
+                                <th>[`Default value`]</th>
+                                <th>[`Type and values`]</th>
+                                <th>[`Required`]</th>
                                 <th colspan="2">&nbsp;</th>
                             </tr>
                         </thead>
@@ -69,7 +80,7 @@
                         <tbody style="vertical-align: top !important;">
                             {foreach $fields as $field}
                                 <tr class="field-row" data-id="{$field.id}">
-                                    <td><i class="icon16 sort"></i></td>
+                                    <td><i class="icon16 sort tr-sortable-handle"></i></td>
                                     <td>{$field.name|escape}</td>
                                     <td>{$field.hint|escape}</td>
                                     <td>{$field.default_value|escape}</td>
@@ -97,19 +108,15 @@
                                     </td>
                                     <td>
                                         <div class="control-buttons">
-                                            <a href="#" class="edit-but"><i class="icon16 edit"></i>Редактировать</a>
-                                            <a href="#" class="delete-but"><i class="icon16 cross"></i>Удалить</a>
+                                            <a href="#" class="edit-but"><i class="icon16 edit"></i>[`Edit`]</a>
+                                            <a href="#" class="delete-but"><i class="icon16 cross"></i>[`Delete`]</a>
                                         </div>
                                     </td>
                                 </tr>
                             {/foreach}
-
-
-
                         </tbody>
                     </table>
-
-                    <a href="#/addField/" class="js-action"><i class="icon16 add"></i>Добавить</a>
+                    <a href="#/addField/" class="js-action"><i class="icon16 add"></i>[`Add`]</a>
                 </div>
             </div>
         </div>
@@ -148,8 +155,10 @@
         <td>${required}</td>
         <td>
         <div class="control-buttons">
-        <a href="#" class="edit-but"><i class="icon16 edit"></i>Редактировать</a>
-        <a href="#" class="delete-but"><i class="icon16 cross"></i>Удалить</a>
+    {/literal}
+        <a href="#" class="edit-but"><i class="icon16 edit"></i>[`Edit`]</a>
+        <a href="#" class="delete-but"><i class="icon16 cross"></i>[`Delete`]</a>
+    {literal}
         </div>
         </td>
         </tr>
@@ -174,12 +183,15 @@
         <option {{if type == $index}}selected="selected"{{/if}} value="${$index}">${$value}</option>
         {{/each}}
         </select>
+
         <div class="field-values">
         <ul>
+
         {{if type == 'checkboxes' || type == 'select_multiple'}}
 
         {{each values}}
         <li>
+        <i class="icon16 sort"></i>
         <input type="hidden" name="field[values][id][]" value="${$value.id}" />
         <input class="switch-item" type="hidden" name="field[values][value][]" value="0" {{if $value.value == '1'}}disabled="disabled"{{/if}} />
         <input class="switch-item" type="checkbox" name="field[values][value][]" value="1" {{if $value.value == '1'}}checked="checked"{{/if}} />
@@ -192,6 +204,7 @@
 
         {{each values}}
         <li>
+        <i class="icon16 sort"></i>
         <input type="hidden" name="field[values][id][]" value="${$value.id}" />
         <input class="switch-item" type="hidden" name="field[values][value][]" value="0" {{if $value.value == '1'}}disabled="disabled"{{/if}} />
         <input class="switch-item" type="radio" name="field[values][value][]" value="1" {{if $value.value == '1'}}checked="checked"{{/if}} />
@@ -202,11 +215,11 @@
         {{/if}}
 
         {{/if}}
-
+{/literal}
         </ul>
-        <a class="add-field-value-but" href="#"><i class="icon10 add"></i>Добавить значение</a>
+        <a class="add-field-value-but" href="#"><i class="icon10 add"></i>[`Add value`]</a>
         </div>
-
+{literal}
         </td>
         <td>
         <input type="hidden" value="0" name="field[required]" />
@@ -214,7 +227,7 @@
         </td>
         <td>
         <div class="control-buttons">
-        <a class="save-field-but" href="#"><i class="icon16 yes"></i>Сохранить</a>
+        <a class="save-field-but" href="#"><i class="icon16 yes"></i>[`Save`]</a>
         </div>
         </td>
         </tr>
@@ -241,9 +254,9 @@
 
 <script type="text/javascript" src="{$wa_app_static_url}js/form.js"></script>	
 <script type="text/javascript">
-    var field_types = $.parseJSON('{json_encode($field_types)}');
-    $.wforms_form.init({
+var field_types = $.parseJSON('{json_encode($field_types)}');
+$.wforms_form.init({
     form_id: {$form.id},
     field_types: field_types
-    });
+});
 </script>

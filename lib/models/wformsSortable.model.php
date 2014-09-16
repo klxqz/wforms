@@ -6,7 +6,7 @@ abstract class wformsSortableModel extends waModel {
     protected $context = null;
 
     public function move($id, $after_id, $context = null) {
-        
+
         $entry = $this->getById($id);
 
         if (!$entry) {
@@ -18,7 +18,7 @@ abstract class wformsSortableModel extends waModel {
             if (!$after_item) {
                 throw new waException(sprintf(_w("%s entry not found"), $this->table) . var_export($after_id, true) . __LINE__);
             }
-            
+
             $sort = $after_item[$this->sort];
         } else {
             $sort = -1;
@@ -31,13 +31,13 @@ abstract class wformsSortableModel extends waModel {
             $sort++;
             $sql = "UPDATE {$this->table} SET {$this->sort} = {$this->sort} + 1 WHERE {$this->sort} >= i:sort AND {$this->sort} < i:sort_old";
         }
-        
+
         if ($sql) {
             $params = array('sort' => $sort, 'sort_old' => $entry[$this->sort]);
             if ($context !== null) {
                 $sql .= ' AND ' . $this->getWhereByField($this->context, $context);
             }
-            
+
             $this->exec($sql, $params);
             $this->updateById($id, array($this->sort => (int) $sort));
         }
@@ -108,10 +108,9 @@ abstract class wformsSortableModel extends waModel {
     }
 
     public function getByField($field, $value = null, $all = false, $limit = false) {
-        
         $data = parent::getByField($field, $value, $all, $limit);
         if (is_array($data) && $data && ($all || (is_array($field) && $value))) {
-            uasort($data, array($this, 'sort'));
+            usort($data, array($this, 'sort'));
         }
         return $data;
     }

@@ -17,6 +17,8 @@
                 return false;
             });
 
+            this.initDeleteForm();
+
             var hash = window.location.hash;
             if (hash === '#/' || !hash) {
                 this.dispatch();
@@ -73,7 +75,33 @@
             }
         },
         defaultAction: function() {
-            $("#content").load('?action=records');
+            $("#content").load('?action=forms');
+        },
+        initDeleteForm: function() {
+            $('#wa-app').on('click', '.delete-form', function() {
+                var id = $(this).data('id');
+                if (confirm("Confirm the deletion?")) {
+                    $.ajax({
+                        type: 'POST',
+                        url: '?action=deleteForm',
+                        dataType: 'json',
+                        data: {id: id},
+                        success: function(data, textStatus, jqXHR) {
+                            if (data.status == 'ok') {
+                                $('#wform-' + id).remove();
+                                $('#form-list-table tr[data-id=' + id + ']').remove();
+                                if ($('#edit-form #form-id').length && $('#edit-form #form-id').val() == id) {
+                                    location.href = '#/';
+                                }
+                                //field_row.remove();
+                            } else {
+                                alert(data.errors.join(' '));
+                            }
+                        }
+                    });
+                }
+                return false;
+            });
         },
         formAction: function(params) {
             $("#content").load('?action=form&id=' + params);
@@ -81,11 +109,11 @@
         addFormDialog: function(messagebox_id) {
             messagebox_id = messagebox_id || null;
             var showDialog = function() {
-                $('#add-form-dialog').waDialog({
+                var dialog = $('#add-form-dialog').waDialog({
                     disableButtonsOnSubmit: true,
                     onLoad: function() {
-                        if ($('#messagebox-description-content').length) {
-                            $.wforms.initDialogWysiwyg($(this));
+                        if ($('#dialog-description-content').length) {
+                            $.wforms.initDialogWysiwyg($(this), $('#dialog-description-content'));
                         }
                     },
                     onSubmit: function(d) {
@@ -100,7 +128,10 @@
                             data: form.serialize(),
                             success: function(data, textStatus, jqXHR) {
                                 if (data.status == 'ok') {
+                                    $('#form-list-li-tmpl').tmpl(data.data.form).appendTo('.form-list');
+                                    $('#form-list-tr-tmpl').tmpl(data.data.form).appendTo('#form-list-table > tbody');
                                     form.find('.dialog-response').html('<span class="success-msg">' + data.data.message + '</span>');
+                                    dialog.trigger('close');
                                 } else {
                                     form.find('.dialog-response').html('<span class="error-msg">' + data.errors.join() + '</span>');
                                 }
@@ -125,13 +156,13 @@
 
 
         },
-        initDialogWysiwyg: function(d) {
+        initDialogWysiwyg: function(d, el) {
             var field = d.find('.field.description');
             field.find('i').hide();
             field.find('.s-editor-core-wrapper').show();
             var height = (d.find('.dialog-window').height() * 0.8) || 350;
 
-            $('#messagebox-description-content').waEditor({
+            el.waEditor({
                 lang: wa_lang,
                 toolbarFixedBox: false,
                 maxHeight: height,

@@ -16,13 +16,21 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: .\n"
 
+msgid "Loading..."
+msgstr "Загрузка..."
+
 msgid "Forms"
 msgstr "Формы"
 
 
-#: /wa-apps/wforms/templates/actions/backend/Backend.html:29
+msgid "All forms"
+msgstr "Все формы"
+
 msgid "New form"
 msgstr "Новая форма"
+
+msgid "Add"
+msgstr "Добавить"
 
 msgid "Add form"
 msgstr "Добавить форму"
@@ -54,6 +62,49 @@ msgstr "Да"
 
 msgid "No"
 msgstr "Нет"
+
+msgid "Send"
+msgstr "Отправить"
+
+msgid "To"
+msgstr "Кому"
+
+msgid "From"
+msgstr "От"
+
+msgid "Edit form"
+msgstr "Редактирование формы"
+
+msgid "Name"
+msgstr "Название"
+
+msgid "Hint"
+msgstr "Подсказка"
+
+msgid "Default value"
+msgstr "Значение по умолчанию"
+
+msgid "Type and values"
+msgstr "Тип и значения"
+
+msgid "Required"
+msgstr "Обязательное"
+
+
+msgid "Edit"
+msgstr "Редактировать"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Add value"
+msgstr "Добавить значение"
+
+msgid "List of forms"
+msgstr "Список форм"
+
+msgid "Helper"
+msgstr "Хелпер"
 
 
 

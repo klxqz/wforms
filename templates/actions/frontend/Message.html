@@ -1,0 +1,12 @@
+<table>
+    {foreach $data as $key => $value}
+        <tr>
+            <td>
+                {$key|escape}
+            </td>
+            <td>
+                {$value|escape}
+            </td>
+        </tr>
+    {/foreach}
+</table>

@@ -32,6 +32,7 @@ class wformsBackendSaveFieldController extends waJsonController {
                         'form_id' => $data['form_id'],
                         'name' => $value_name,
                         'value' => $values[$index],
+                        'sort' => (int) $index,
                     );
 
                     if (empty($value['id'])) {

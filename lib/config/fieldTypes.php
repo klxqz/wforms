@@ -8,5 +8,6 @@ return array(
     'radio' => 'Переключатель (radio)',
     'select' => 'Раскрывающийся список (select)',
     'select_multiple' => 'Список множественного выбора (select multiple)',
-    'file' => 'Файл(file)',
+    'file' => 'Файл (file)',
+    'hidden' => 'Скрытое поле (hidden)',
 );

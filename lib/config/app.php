@@ -1,60 +1,15 @@
 <?php
 
-/* 
- * IMPORTANT NOTE!
- * This wforms application is a ready-to-use template for developing your own application.
- * To begin the development, copy folder wforms to the folder with your app's name
- * and change at all places wforms to the your app's APP_ID.
- * Failure to do so may result in accident loss of your code changes during update of your app via the Installer.
- * Read more at
- * http://www.webasyst.com/apps/wforms/
- * 
- * Also note that enabling the debug option is strongly advisable for application development.
- * To enable this option, ensure that the following code is added to file wa-config/config.php:
- *     'debug' => true
- *
- * ВНИМАНИЕ!
- * Это приложение "пустышка" - готовый каркас для разработки нового приложения.
- * Чтобы начинать разработку на основе этого каркаса скопируйте папку wforms в папку с названием вашего приложения,
- * замените везде wforms на APP_ID вашего приложения.
- * Иначе вы можете случайно потерять изменения при обновлении этого приложения через инсталлер.
- * Подробнее:
- * http://www.webasyst.com/ru/apps/wforms/
- * 
- * Также обратите внимание, что для разработки приложений крайне рекомендуется включить debug.
- * Для этого в файле wa-config/config.php должна быть строчка:
- *     'debug' => true
- */
-
-/** 
- * Application's main configuration file
- * Read more about application configs at
- * http://www.webasyst.com/framework/docs/dev/config/#app.php
- *
- * Главный конфигурационный файл приложения
- * Подробнее о конфигах приложения:
- * http://www.webasyst.com/ru/framework/docs/dev/config/#app.php
- */
 return array(
-	// app name
-	// название приложения
-	'name' => 'Forms',
-	// relative path to app icon file
-	// относительный путь до иконки приложения
-	'img' => 'img/wforms.png',
-    // developer name
-    // разработчик приложения
-	'vendor' => 'webasyst',
-    // app version
-    // номер версии
-	'version' => '0.1',
-	// extended access rights setup availability
-	// флаг наличия расширенных прав
-	'rights' => true,
-    // frontend availability
-    // флаг наличия фронтенда приложения
-	'frontend' => true,
-	// mobile version availability
-	// флаг наличия мобильной версии приложения
-	//'mobile' => true
+    'name' => 'Forms',
+    'icon' => array(
+        96 => 'img/wforms96.png',
+        48 => 'img/wforms.png',
+        24 => 'img/wforms24.png',
+        16 => 'img/wforms16.png'
+    ),
+    'vendor' => '985310',
+    'version' => '1.0.0',
+    'rights' => false,
+    'frontend' => true,
 );

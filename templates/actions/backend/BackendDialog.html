@@ -4,18 +4,36 @@
         <div class="dialog-window">
             <div class="dialog-content">
                 <div class="dialog-content-indent">
+                    <h1>[`New form`]</h1>
                     <div class="fields form s-dialog-form">
-                        <input type="hidden" id="form-id" value="{if isset($form.id)}{$form.id}{/if}" name="form[id]">
                         <div class="field-group">
                             <div class="field">
                                 <div class="name">[`Title`]</div>
                                 <div class="value">
-                                    <input type="text" id="messagebox-name" value="{if isset($form.name)}{$form.name|escape}{/if}" class="large long" name="form[name]">
+                                    <input type="text" value="" class="large long" name="form[title]">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">[`To`]</div>
+                                <div class="value">
+                                    <input type="text" value="" class="large long" name="form[to]">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">[`From`]</div>
+                                <div class="value">
+                                    <input type="text" value="" class="large long" name="form[from]">
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="name">[`Enabled`]</div>
+                                <div class="value">
+                                    <input type="hidden" value="0" name="form[enabled]">
+                                    <input type="checkbox" value="1" checked="checked" class="large long" name="form[enabled]">
                                 </div>
                             </div>
                         </div>
                         <div class="field-group" style="min-width: 600px;">
-
                             <div class="field description">
                                 <div class="name">
                                     <label for="description">
@@ -30,7 +48,7 @@
                                             <li><a class="html" href="#">HTML</a></li>
                                         </ul>
                                         <div>
-                                            <textarea style="display:none" id="messagebox-description-content" name="form[description]">{if isset($form.description)}{$form.description|escape}{/if}</textarea>
+                                            <textarea style="display:none" id="dialog-description-content" name="form[description]">{if isset($form.description)}{$form.description|escape}{/if}</textarea>
                                             <div class="ace">
                                                 <div id="wa-ace-editor-container"></div>
                                             </div>

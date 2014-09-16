@@ -1,23 +1,39 @@
-<h1>{$form.title|escape}</h1>
+{*<h1>{$form.title|escape}</h1>*}
 {if $form.description}
-    <div>
+    <div class="wforms-form-description">
         {$form.description}
     </div>
 {/if}
 
-<form>
+{if !empty($error)}
+<div class="errormsg">
+    {$error}
+</div>
+{/if}
+
+<form class="wforms-form" id="wforms-form-{$form.id}" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="wform_id" value="{$form.id}">
+    {foreach $form.fields as $field}
+        {if $field.type == 'hidden'}
+            <input type="hidden" name="field_{$field.id}" value="{$field.default_value|escape}">
+        {/if}
+    {/foreach}
     <table class="form-fields">
-        {foreach $fields as $field}
-            <tr class="form-field">
-                <td class="field-name">
-                    {$field.name|escape}                
-                </td>
-                <td class="field-value">
-                    {include file="./fields/include.`$field.type`.html" field=$field}
-                    <p>{$field.hint|escape}</p>
-                    
-                </td>
-            </tr>
+        {foreach $form.fields as $field}
+            {if $field.type != 'hidden'}
+                <tr class="form-field">
+                    <td class="field-name">
+                        {$field.name|escape}
+                        {if $field.required}
+                            <span class="required">*</span>
+                        {/if}            
+                    </td>
+                    <td class="field-value">
+                        {include file="./fields/include.`$field.type`.html" field=$field}
+                        <p>{$field.hint|escape}</p>
+                    </td>
+                </tr>
+            {/if}
         {/foreach}
     </table>
     <input type="submit" value="Отправить">

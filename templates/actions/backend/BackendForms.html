@@ -1,0 +1,40 @@
+<h1>[`List of forms`]</h1>
+<p></p>
+<table id="form-list-table" class="zebra full-width ui-sortable">
+    <thead>
+        <tr class="header">
+            <th>[`Helper`]</th>
+            <th>[`Title`]</th>
+            <th>[`Description`]</th>
+            <th>[`To`]</th>
+            <th>[`From`]</th>
+            <th>[`Enabled`]</th>
+            <th colspan="2">&nbsp;</th>
+        </tr>
+    </thead>
+
+    <tbody style="vertical-align: top !important;">
+        {foreach $forms as $form}
+            <tr class="form-row" data-id="{$form.id}">
+                <td>{ldelim}$wa->wforms->getHtmlForm({$form.id}){rdelim}</td>
+                <td>{$form.title|escape}</td>
+                <td>{$form.description|strip_tags|truncate:400}</td>
+                <td>{$form.to|escape}</td>
+                <td>{$form.from|escape}</td>
+                <td>
+                    {if $form.enabled}
+                        <i class="icon10 status-green"></i>
+                    {else}
+                        <i class="icon10 status-red"></i>
+                    {/if}
+                </td>
+                <td>
+                    <div class="control-buttons">
+                        <a href="#/form/{$form.id}/"><i class="icon16 edit"></i>[`Edit`]</a>
+                        <a class="delete-form" data-id="{$form.id}" href="#"><i class="icon16 cross"></i>[`Delete`]</a>
+                    </div>
+                </td>
+            </tr>
+        {/foreach}
+    </tbody>
+</table>

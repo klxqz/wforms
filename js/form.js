@@ -7,8 +7,8 @@
             this.options = options;
             var self = this;
 
-            if ($('#messagebox-description-content').length) {
-                $.wforms.initDialogWysiwyg($('#edit-form'));
+            if ($('#form-description-content').length) {
+                $.wforms.initDialogWysiwyg($('#edit-form'), $('#form-description-content'));
             }
 
             this.initSaveField();
@@ -159,6 +159,7 @@
                             var tpl = $('#add-edit-field-tmpl').tmpl(data.data.field);
                             field_row.replaceWith(tpl);
                             tpl.find('select.field-type').change();
+                            tpl.find(".field-values ul").sortable();
 
                         } else {
                             alert(data.errors.join(' '));
@@ -213,7 +214,24 @@
         initChangeFieldType: function() {
             $('#edit-form').on('change', '.add-edit-field select.field-type', function() {
                 if ($(this).val() == 'select_multiple' || $(this).val() == 'select' || $(this).val() == 'radio' || $(this).val() == 'checkboxes') {
-                    $(this).closest('.add-edit-field').find('.field-values').show();
+                    var field_values = $(this).closest('.add-edit-field').find('.field-values');
+                    field_values.show();
+                    if ($(this).val() == 'radio' || $(this).val() == 'select') {
+                        field_values.find('input.switch-item[type=checkbox]').each(function() {
+                            var name = $(this).attr('name');
+                            $(this).replaceWith('<input class="switch-item" type="radio" name="' + name + '" value="1"/>');
+                        });
+                        field_values.find('input.switch-item[type=radio]:first').change();
+                        //field_values.find('input.switch-item[type=checkbox]').attr('type', 'radio');
+                    } else {
+                        field_values.find('input.switch-item[type=radio]').each(function() {
+                            var name = $(this).attr('name');
+                            $(this).replaceWith('<input class="switch-item" type="checkbox" name="' + name + '" value="1"/>');
+                        });
+                        field_values.find('input.switch-item[type=checkbox]:first').change();
+                        //field_values.find('input.switch-item[type=radio]').replaceWith();
+                    }
+
                 } else {
                     $(this).closest('.add-edit-field').find('.field-values').hide();
                 }
@@ -222,6 +240,7 @@
         initSortable: function() {
             var self = this;
             $("#form-fiels-table").sortable({
+                'handle': '.tr-sortable-handle',
                 'items': '> tbody:first > tr.field-row',
                 'update': function(event, ui) {
                     var $field = $(ui.item);
