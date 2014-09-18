@@ -12,21 +12,21 @@ class wformsViewHelper extends waAppViewHelper {
         }
 
         $fields = $field_model->getFormFields($form_id);
-        
-            foreach ($fields as $field) {
-                if ($field['type'] != 'file') {
-                    $value = waRequest::post('field_' . $field['id']);
-                    if($field['required'] && empty($value)) {
-                        throw new waException('Ошибка отправки формы. Заполните обязательные поля');
-                    }
-                    if (is_array($value)) {
-                        $data[$field['name']] = implode(', ', $value);
-                    } else {
-                        $data[$field['name']] = $value;
-                    }
+
+        foreach ($fields as $field) {
+            if ($field['type'] != 'file') {
+                $value = waRequest::post('field_' . $field['id']);
+                if ($field['required'] && empty($value)) {
+                    throw new waException('Ошибка отправки формы. Заполните обязательные поля');
+                }
+                if (is_array($value)) {
+                    $data[$field['name']] = implode(', ', $value);
+                } else {
+                    $data[$field['name']] = $value;
                 }
             }
-        
+        }
+
 
 
         $view = wa()->getView();
@@ -46,9 +46,8 @@ class wformsViewHelper extends waAppViewHelper {
         }
 
         if ($form['from']) {
-            $message->setFrom($from, $form['from']);
+            $message->setFrom($form['from']);
         }
-
 
         if ($message->send()) {
             return true;
@@ -59,12 +58,12 @@ class wformsViewHelper extends waAppViewHelper {
     public function getHtmlForm($form_id) {
         $post_wform_id = waRequest::post('wform_id');
         $error = '';
-        try{
+        try {
             if ($post_wform_id == $form_id) {
                 $this->sendForm($form_id);
             }
-        } catch (waException $e){
-            $error = $e->getMessage();   
+        } catch (waException $e) {
+            $error = $e->getMessage();
         }
 
         $form_model = new wformsFormModel();

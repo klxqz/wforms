@@ -118,9 +118,6 @@
                         break;
                 }
                 $(this).closest('.field-values').find('ul').append(tpl);
-
-
-
                 return false;
             });
         },
@@ -246,7 +243,7 @@
                     var $field = $(ui.item);
                     var $after = $field.prev(':visible');
                     self.fieldSort($field, $after, $(this));
-                },
+                }
             });
         },
         fieldSort: function($field, $after, $fields) {

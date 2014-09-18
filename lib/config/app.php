@@ -11,5 +11,5 @@ return array(
     'vendor' => '985310',
     'version' => '1.0.0',
     'rights' => false,
-    'frontend' => true,
+    'frontend' => false,
 );

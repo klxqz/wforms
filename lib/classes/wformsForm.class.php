@@ -1,6 +1,6 @@
 <?php
 
-class wformForm {
+class wformsForm {
 
     protected $data = array();
     protected $model;

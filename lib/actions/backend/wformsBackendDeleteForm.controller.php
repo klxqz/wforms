@@ -5,7 +5,7 @@ class wformsBackendDeleteFormController extends waJsonController {
     public function execute() {
         try {
             $id = waRequest::post('id', 0, waRequest::TYPE_INT);
-            $form = new wformForm($id);
+            $form = new wformsForm($id);
             $form->delete();
             
         } catch (Exception $ex) {
