@@ -3,8 +3,9 @@
 class wformsBackendDialogAction extends waViewAction {
 
     public function execute() {
-
-        //$this->view->assign('records', $records);
+        $user = $this->getUser();
+        $email = $user->get('email', 'default');
+        $this->view->assign('email', $email);
     }
 
 }
