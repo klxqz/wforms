@@ -6,9 +6,14 @@
 {/if}
 
 {if !empty($error)}
-<div class="errormsg">
-    {$error}
-</div>
+    <div class="errormsg">
+        {$error}
+    </div>
+{/if}
+{if !empty($success)}
+    <div class="successmsg">
+        {$success}
+    </div>
 {/if}
 
 <form class="wforms-form" id="wforms-form-{$form.id}" method="post" enctype="multipart/form-data">
@@ -29,12 +34,23 @@
                         {/if}            
                     </td>
                     <td class="field-value">
-                        {include file="./fields/include.`$field.type`.html" field=$field}
+                        {include file="./fields/include.`$field.type`.html" field=$field success=isset($success)}
                         <p>{$field.hint|escape}</p>
                     </td>
                 </tr>
             {/if}
         {/foreach}
+        {if $form.use_captcha}
+            <tr class="form-field">
+                <td class="field-name">
+                    Код с картинки
+                    <span class="required">*</span>
+                </td>
+                <td class="field-value">
+                    {$wa->captcha()}
+                </td>
+            </tr>
+        {/if}
     </table>
     <input type="submit" value="Отправить">
 </form>

@@ -34,6 +34,13 @@
                     <input type="checkbox" {if $form.enabled}checked="checked"{/if} value="1" name="form[enabled]">
                 </div>
             </div>
+            <div class="field">
+                <div class="name">[`Use captcha`]</div>
+                <div class="value">
+                    <input type="hidden"  value="0" name="form[use_captcha]">
+                    <input type="checkbox" {if $form.use_captcha}checked="checked"{/if} value="1" name="form[use_captcha]">
+                </div>
+            </div>
         </div>
         <div class="field-group" style="min-width: 600px;">
             <div class="field description">
@@ -156,8 +163,8 @@
         <td>
         <div class="control-buttons">
     {/literal}
-        <a href="#" class="edit-but"><i class="icon16 edit"></i>[`Edit`]</a>
-        <a href="#" class="delete-but"><i class="icon16 cross"></i>[`Delete`]</a>
+    <a href="#" class="edit-but"><i class="icon16 edit"></i>[`Edit`]</a>
+    <a href="#" class="delete-but"><i class="icon16 cross"></i>[`Delete`]</a>
     {literal}
         </div>
         </td>
@@ -215,11 +222,11 @@
         {{/if}}
 
         {{/if}}
-{/literal}
-        </ul>
-        <a class="add-field-value-but" href="#"><i class="icon10 add"></i>[`Add value`]</a>
-        </div>
-{literal}
+    {/literal}
+    </ul>
+    <a class="add-field-value-but" href="#"><i class="icon10 add"></i>[`Add value`]</a>
+    </div>
+    {literal}
         </td>
         <td>
         <input type="hidden" value="0" name="field[required]" />
@@ -254,9 +261,9 @@
 
 <script type="text/javascript" src="{$wa_app_static_url}js/form.js"></script>	
 <script type="text/javascript">
-var field_types = $.parseJSON('{json_encode($field_types)}');
-$.wforms_form.init({
+    var field_types = $.parseJSON('{json_encode($field_types)}');
+    $.wforms_form.init({
     form_id: {$form.id},
     field_types: field_types
-});
+    });
 </script>

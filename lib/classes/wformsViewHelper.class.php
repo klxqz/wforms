@@ -27,6 +27,9 @@ class wformsViewHelper extends waAppViewHelper {
             }
         }
 
+        if (!wa()->getCaptcha()->isValid()) {
+            throw new waException('Капча введена неверно');
+        }
 
 
         $view = wa()->getView();
@@ -56,11 +59,14 @@ class wformsViewHelper extends waAppViewHelper {
     }
 
     public function getHtmlForm($form_id) {
+        $view = wa()->getView();
         $post_wform_id = waRequest::post('wform_id');
         $error = '';
         try {
             if ($post_wform_id == $form_id) {
                 $this->sendForm($form_id);
+                $success = 'Сообщение успешно отправлено';
+                $view->assign('success', $success);
             }
         } catch (waException $e) {
             $error = $e->getMessage();
@@ -85,7 +91,6 @@ class wformsViewHelper extends waAppViewHelper {
         unset($field);
         $form['fields'] = $fields;
 
-        $view = wa()->getView();
         $view->assign('form', $form);
         $view->assign('error', $error);
         $template_path = wa()->getAppPath('templates/actions/frontend/Form.html', 'wforms');

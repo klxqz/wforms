@@ -9,7 +9,7 @@ return array(
         16 => 'img/wforms16.png'
     ),
     'vendor' => '985310',
-    'version' => '1.0.0',
+    'version' => '1.1.0',
     'rights' => false,
     'frontend' => false,
 );

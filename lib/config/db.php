@@ -8,6 +8,7 @@ return array(
         'to' => array('varchar', 255, 'null' => 0, 'default' => ''),
         'from' => array('varchar', 255, 'null' => 0, 'default' => ''),
         'enabled' => array('tinyint', 1, 'null' => 0, 'default' => '1'),
+        'use_captcha' => array('tinyint', 1, 'null' => 0, 'default' => '1'),
         ':keys' => array(
             'PRIMARY' => 'id',
         ),

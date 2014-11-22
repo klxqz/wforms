@@ -1,1 +1,1 @@
-<input type="text" name="field_{$field.id}" value="{if $wa->post("field_`$field.id`")}{$wa->post("field_`$field.id`")|escape}{else}{$field.default_value|escape}{/if}">
+<input type="text" name="field_{$field.id}" value="{if $wa->post("field_`$field.id`") && !$success}{$wa->post("field_`$field.id`")|escape}{else}{$field.default_value|escape}{/if}">
